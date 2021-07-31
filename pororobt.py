@@ -99,7 +99,7 @@ class PororoBackTranslator(PandasMixin):
         gen_args = copy.copy(self.hub.args)
         for k, v in kwargs.items():
             setattr(gen_args, k, v)
-            generator = mt._model.task.build_generator(mt._model.models, gen_args)
+            generator = self.hub.task.build_generator(self.hub.models, gen_args)
             
         results = []
         total = len(sentences)
@@ -130,7 +130,7 @@ class PororoBackTranslator(PandasMixin):
             # Process top predictions
             for hypo in hypos[: min(len(hypos), n_best)]:
                 hypo_tokens = hypo["tokens"].int().cpu()
-                hypotheses.append(hub.decode(hypo_tokens))
+                hypotheses.append(self.hub.decode(hypo_tokens))
             outputs.append(hypotheses)
         return outputs
         
